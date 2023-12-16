@@ -6,24 +6,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 public class App {
     public static void main(String[] args) {
+
+        
         WebDriver driver = null;
-        WebDriverManager.chromedriver().browserVersion("120.0.6099.71").setup();
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\enoor\\Desktop\\Authomation\\EnasSelenium\\ChromeDriver.exe");
         ChromeOptions options = new ChromeOptions();
         driver = new ChromeDriver(options);
         driver.get("https://www.google.com/");
         driver.findElement(By.name("q")).sendKeys("Selenium Tutorials");
         driver.findElement(By.name("q")).sendKeys(Keys.ENTER);
 
-        if (driver.findElement(By.name("q")).getText().equals("Selenium Tutorials")) {
-            System.out.println("Text Assertion Passed");
-        } else {
-            System.out.println("Text Assertion Failed");
-        }
-
+        String expectedTitle = "Selenium Tutorisals - Google Search";
+        String actualTitle = driver.findElement(By.name("q")).getText();
+        assert driver.getTitle().equals(expectedTitle)
+                 : "Text Assertion Failed! Expected title: " + expectedTitle + ", Actual title: " + actualTitle;
         driver.close();
     }
 }

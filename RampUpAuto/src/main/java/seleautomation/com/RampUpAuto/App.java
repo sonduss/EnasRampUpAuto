@@ -20,7 +20,7 @@ public class App {
 
         String expectedTitle = "Selenium Tutorials - Google Search";
         String actualTitle = driver.getTitle();
-        assert driver.getTitle().equals(expectedTitle)
+        assert actualTitle.equals(expectedTitle)
                 : "Text Assertion Failed! Expected title: " + expectedTitle + ", Actual title: " + actualTitle;
         driver.close();
     }

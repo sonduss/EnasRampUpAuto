@@ -11,16 +11,17 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class GitHubSignInPOMDataProviderStartup {
-    WebDriver driver = null;
+    WebDriver driver;
     GitHubSignInPOM gitHubSignInPOM;
 
     @BeforeClass
     @Parameters("browser")
-    public void beforeClass(String browser) {
+    public void beforeClass(@Optional("chrome") String browser) {
         if (browser.equalsIgnoreCase("chrome")) {
             System.setProperty("webdriver.chrome.driver",
                     "C:\\Users\\enoor\\Desktop\\Authomation\\EnasRampUpAuto\\ChromeDriver.exe");
@@ -39,26 +40,16 @@ public class GitHubSignInPOMDataProviderStartup {
 
         gitHubSignInPOM = new GitHubSignInPOM(driver);
 
-
     }
 
     @DataProvider(name = "github-signin")
     public Object[][] githubSigninDb(Method m) {
-
-        switch (m.getName()) {
-            case "validSignIn":
-                return new Object[][] {
-                        { "asaltest19@gmail.com", "password123456789s*" }
-                };
-            case "inValidSignIn":
-                return new Object[][] {
-                        { "asaltest1646449@gmail.com", "password123456789s*" },
-                        { "asaltest19@gmail.com", "password123456789sgg" },
-                        { "", "" }
-                };
-        }
-        return null;
-
+        return new Object[][] {
+                { "asaltest19@gmail.com", "password123456789s*", true },
+                { "asaltest1646449@gmail.com", "password123456789s*", false },
+                { "asaltest19@gmail.com", "password123456789sgg", false },
+                { "", "", false }
+        };
     };
 
     @BeforeMethod
@@ -67,23 +58,18 @@ public class GitHubSignInPOMDataProviderStartup {
     }
 
     @Test(dataProvider = "github-signin")
-    public void validSignIn(String email, String password) {
+    public void githubSignIn(String email, String password, boolean valid) {
         gitHubSignInPOM.enterUserName(email);
         gitHubSignInPOM.enterPassword(password);
         gitHubSignInPOM.pressLogin();
-        String currentUrl = gitHubSignInPOM.getCurrentUrl();
-        Assert.assertEquals(currentUrl, "https://github.com");
-    }
-
-    @Test(dataProvider = "github-signin")
-    public void inValidSignIn(String email, String password) {
-        gitHubSignInPOM.enterUserName(email);
-        gitHubSignInPOM.enterPassword(password);
-        gitHubSignInPOM.pressLogin();
-        String errorMessage = gitHubSignInPOM.getErrorMessage();
-        String expectedResult = "Incorrect username or password.";
-        Assert.assertEquals(errorMessage, expectedResult);
-
+        if (valid) {
+            String currentUrl = gitHubSignInPOM.getCurrentUrl();
+            Assert.assertEquals(currentUrl, "https://github.com");
+        } else {
+            String errorMessage = gitHubSignInPOM.getErrorMessage();
+            String expectedResult = "Incorrect username or password.";
+            Assert.assertEquals(errorMessage, expectedResult);
+        }
     }
 
     @AfterClass

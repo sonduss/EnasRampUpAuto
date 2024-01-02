@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestSuite" thread-count="2" parallel="tests">
+    <test name="ChromeBrowser_Test">
+        <parameter name="browser" value="Chrome" />
+        <classes>
+            <class name="seleautomation.com.RampUpAuto.GitHubSignInPOMDataProviderStartup">
+            </class>
+        </classes>
+    </test>
+    <test name="FirefoxBrowser_Test">
+        <parameter name="browser" value="Firefox" />
+        <classes>
+            <class name="seleautomation.com.RampUpAuto.GitHubSignInPOMDataProviderStartup">
+            </class>
+        </classes>
+    </test>
+    <test name="EdgeBrowser_Test">
+        <parameter name="browser" value="Edge" />
+        <classes>
+            <class name="seleautomation.com.RampUpAuto.GitHubSignInPOMDataProviderStartup">
+            </class>
+        </classes>
+    </test>
+</suite>

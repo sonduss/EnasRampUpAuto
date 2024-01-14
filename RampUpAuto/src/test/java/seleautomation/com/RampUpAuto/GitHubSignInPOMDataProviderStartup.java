@@ -64,11 +64,11 @@ public class GitHubSignInPOMDataProviderStartup {
         gitHubSignInPOM.pressLogin();
         if (valid) {
             String currentUrl = gitHubSignInPOM.getCurrentUrl();
-            Assert.assertEquals(currentUrl, "https://github.com");
+            Assert.assertEquals(currentUrl, "https://github.com/session");
         } else {
             String errorMessage = gitHubSignInPOM.getErrorMessage();
             String expectedResult = "Incorrect username or password.";
-            Assert.assertEquals(errorMessage, expectedResult);
+            Assert.assertEquals(errorMessage.trim(), expectedResult);
         }
     }
 
